@@ -1,11 +1,22 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
-const text = ref("Hello, I'm a big cassoulet");
+const text = ref("");
+const trimmedText = computed(() => text.value.trim());
 const posts = ref([]);
 
-function addPost(e) {
-  posts.value.push(text.value);
+function addPost() {
+  const newPost = {
+    id: Math.random().toString(36).substring(2),
+    content: trimmedText.value,
+    createdAt: new Date(),
+    author: {
+      id: Math.random().toString(36).substring(2),
+      username: "TOUKAM",
+      avatarUrl: "https://i.pravatar.cc/2002",
+    },
+  };
+  posts.value.push(newPost);
   text.value = "";
 }
 </script>
@@ -15,10 +26,24 @@ function addPost(e) {
     <div class="container">
       <form action="" class="card" @submit.prevent="addPost">
         <textarea name="post" id="post" placeholder="Quoi de neuf?" v-model="text"></textarea>
-        <button type="submit">Publier</button>
+        <button type="submit" :disabled="!trimmedText">Publier</button>
       </form>
 
-      <p v-for="(post, index) in posts" :key="index">{{ index }} : {{ post }}</p>
+      <p v-if="!posts.length">Pas de post pour le moment.</p>
+
+      <article v-for="post in [...posts].reverse()" :key="post.id" class="card">
+        <div class="post-header">
+          <img
+            :src="post.author.avatarUrl"
+            alt="Avatar"
+            width="40"
+            height="40"
+            class="user-image"
+          />
+          <a>{{ post.author.username }}</a>
+        </div>
+        <p>{{ post.content }}</p>
+      </article>
     </div>
   </main>
 </template>
@@ -66,8 +91,34 @@ button {
   padding: 0 1rem;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
 button:hover {
   transition: background-color 0.3s;
   background-color: var(--color-bg-tertiary);
+}
+
+article {
+  padding: 0.75rem 1.5rem;
+  overflow: hidden;
+}
+
+article p {
+  white-space: pre-wrap;
+}
+
+.user-image {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-header {
+  align-items: center;
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 1rem;
 }
 </style>
