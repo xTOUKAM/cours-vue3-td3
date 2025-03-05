@@ -114,6 +114,10 @@ body {
     slideInUp 0.5s ease-out;
 }
 
+.card.removing {
+  animation: slideOutDown 0.5s forwards;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -206,6 +210,25 @@ a:hover {
 .btn-icon.trash-icon:hover {
   animation: colorChange 0.3s forwards;
 }
+
+.btn-icon.heart-icon.liked svg {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
+/* Animation for liking */
+.btn-icon.heart-icon {
+  position: relative;
+}
+
+.btn-icon.heart-icon svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-icon.heart-icon.liked svg {
+  animation: likePulse 0.3s ease;
+}
+
 .active {
   color: var(--color-accent);
 }
@@ -244,5 +267,28 @@ a:hover {
   to {
     background: var(--color-bg-tertiary);
     color: var(--color-accent);
+  }
+}
+
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes likePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }

@@ -16,13 +16,27 @@ function addPost() {
       username: "TOUKAM",
       avatarUrl: "https://i.pravatar.cc/2002",
     },
+    liked: false, // Initial state for like
   };
   posts.value.push(newPost);
   text.value = "";
 }
 
 function deletePost(id) {
-  posts.value = posts.value.filter((post) => post.id !== id);
+  const postElement = document.getElementById(id);
+  if (postElement) {
+    postElement.classList.add("removing");
+    setTimeout(() => {
+      posts.value = posts.value.filter((post) => post.id !== id);
+    }, 500);
+  }
+}
+
+function likePost(id) {
+  const post = posts.value.find((post) => post.id === id);
+  if (post) {
+    post.liked = !post.liked;
+  }
 }
 </script>
 
@@ -41,6 +55,7 @@ function deletePost(id) {
         :key="post.id"
         :post="post"
         @delete="deletePost"
+        @like="likePost"
       />
     </div>
   </main>

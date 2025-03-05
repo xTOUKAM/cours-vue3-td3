@@ -1,11 +1,11 @@
 <script setup>
-import { TrashIcon } from "@heroicons/vue/24/outline";
+import { TrashIcon, HeartIcon } from "@heroicons/vue/24/outline";
 defineProps(["post"]);
-const emit = defineEmits(["delete"]);
+const emit = defineEmits(["delete", "like"]);
 </script>
 
 <template>
-  <article class="card">
+  <article :id="post.id" class="card">
     <header>
       <img :src="post.author.avatarUrl" alt="Avatar" width="36" height="36" class="avatar" />
       <a>{{ post.author.username }}</a>
@@ -15,6 +15,13 @@ const emit = defineEmits(["delete"]);
     <footer>
       <button class="btn-icon trash-icon" @click="emit('delete', post.id)">
         <TrashIcon />
+      </button>
+
+      <button
+        :class="['btn-icon', 'heart-icon', { liked: post.liked }]"
+        @click="emit('like', post.id)"
+      >
+        <HeartIcon />
       </button>
     </footer>
   </article>
