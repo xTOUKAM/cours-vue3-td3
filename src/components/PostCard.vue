@@ -8,7 +8,11 @@ const emit = defineEmits(["delete", "like"]);
   <article :id="post.id" class="card">
     <header>
       <img :src="post.author.avatarUrl" alt="Avatar" width="36" height="36" class="avatar" />
-      <a>{{ post.author.username }}</a>
+      <RouterLink
+        class="router"
+        :to="{ name: 'user', params: { username: post.author.username } }"
+        >{{ post.author.username }}</RouterLink
+      >
     </header>
     <p>{{ post.content }}</p>
 
@@ -26,3 +30,11 @@ const emit = defineEmits(["delete", "like"]);
     </footer>
   </article>
 </template>
+
+<style scoped>
+.router {
+  margin-left: 0.5rem;
+  color: #3182ce;
+  text-decoration: none;
+}
+</style>
